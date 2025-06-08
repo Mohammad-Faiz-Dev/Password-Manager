@@ -26,9 +26,9 @@ def generate_password():
 
 # ---------------------------- SAVE INPUT ------------------------------- #
 def save_password():
-    website = website_entry.get()  #Takes the website input and stores it in the website variable
-    email = email_username_entry.get()  #Takes the Email/username input and stores it in the Email/username variable
-    password = password_entry.get()  #Takes the password input and stores it in the password variable
+    website = website_entry.get()
+    email = email_username_entry.get()
+    password = password_entry.get()
     new_data = {
         website: {
             "email": email,
@@ -38,36 +38,36 @@ def save_password():
 
     if len(website) == 0 or len(email) == 0 or len(password) == 0:
         messagebox.showwarning(title="Error", message="Please don't leave any empty fields")
-
         return
 
-    messagebox_ok = messagebox.askokcancel(title="Confirmation", message=f"Website: {website}\nEmail/Username: {email}\nPassword: {password}\nSave data?")
+    messagebox_ok = messagebox.askokcancel(title="Confirmation",
+                                         message=f"Website: {website}\nEmail/Username: {email}\nPassword: {password}\nSave data?")
 
-    # If user clicks "Cancel", stop and notify
     if not messagebox_ok:
         messagebox.showinfo(title="Data not saved", message="The data was not saved.")
         return
 
     try:
         with open("data.json", "r") as data_file:
-            #Reading old data
-            data = json.load(data_file)
+            # Try to read existing data
+            try:
+                data = json.load(data_file)
+            except json.decoder.JSONDecodeError:
+                # If file is empty or invalid, start with empty dict
+                data = {}
     except FileNotFoundError:
+        # If file doesn't exist, create it with new data
         with open("data.json", "w") as data_file:
             json.dump(new_data, data_file, indent=4)
-
     else:
-        #updating old data with new data
+        # Update existing data and save
         data.update(new_data)
-
-        #saving updated data
         with open("data.json", "w") as data_file:
             json.dump(data, data_file, indent=4)
     finally:
         website_entry.delete(0, END)
         password_entry.delete(0, END)
         email_username_entry.delete(0, END)
-        email_username_entry.insert(0, "@gmail.com")
 # ---------------------------- UI SETUP ------------------------------- #
 def find_password():
     website = website_entry.get()
@@ -118,7 +118,7 @@ website_entry.focus()
 #adding entry-box #2
 email_username_entry = Entry(width=48)
 email_username_entry.grid(column=1, row=2, columnspan=3)
-email_username_entry.insert(0, "@gmail.com")
+
 
 #adding entry-box #3
 password_entry = Entry(width=33)
