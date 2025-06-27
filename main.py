@@ -88,7 +88,7 @@ def find_password():
         messagebox.showinfo(title="Alert", message="No Data Found")
 # ---------------------------- SEARCH SAVED PASSWORD ------------------------------- #
 window = Tk()
-window.title("Password Manager")
+window.title("MyPass")
 window.minsize(width=300, height=300)
 window.config(padx=30, pady=30)
 
