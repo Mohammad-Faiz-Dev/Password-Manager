@@ -1,4 +1,4 @@
-# MyPass: Password Manager
+# MyPass: Password Manager App
 
 A simple password manager built with Python's Tkinter GUI library.  
 Features:
